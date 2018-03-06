@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/JavaEEstarter">
+    <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <!-- appName turi atitikti <TomEE install dir>/conf/login.config faile esancia pirma eilute -->
+        <Realm className="org.apache.catalina.realm.JAASRealm" appName="UserLogin"
+               userClassNames="org.apache.openejb.core.security.jaas.UserPrincipal"
+               roleClassNames="org.apache.openejb.core.security.jaas.GroupPrincipal">
+        </Realm>
+    </Realm>
+</Context>

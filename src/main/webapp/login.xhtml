@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui"
+        >
+<h:head/>
+<h:body>
+    <ui:composition template="/WEB-INF/templates/mainLayout.xhtml">
+        <ui:param name="pageName" value="Login" />
+
+        <ui:define name="content">
+            <h:form id="loginForm">
+                <p:panel id="contentPanel" styleClass="contentPanel">
+                    <p:focus context="contentPanel"/>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel for="username" value="User name"/>
+                        <p:inputText id="username" value="#{authenticator.username}" required="true" autocomplete="on"/>
+                        <p:message for="username"/>
+
+                        <p:outputLabel for="password" value="Password"/>
+                        <p:password id="password" value="#{authenticator.password}" required="true"/>
+                        <p:message for="password"/>
+                    </h:panelGrid>
+
+                    <p:messages globalOnly="true" />
+
+                    <div class="controls">
+                        <p:commandButton id="loginButton"
+                                         value="Login"
+                                         actionListener="#{authenticator.loginAndRedirect()}"
+                                         update="contentPanel"/>
+                    </div>
+                    <p:blockUI block="contentPanel" trigger="loginButton">
+                        <p:graphicImage url="/resources/img/loading_32x32.gif"/>
+                    </p:blockUI>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

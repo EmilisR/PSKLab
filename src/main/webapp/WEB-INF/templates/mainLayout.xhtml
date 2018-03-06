@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+        >
+<!--@elvariable id="pageName" type="java.lang.String"-->
+<f:view locale="lt">
+    <h:head>
+        <meta charset="UTF-8"/>
+        <title>#{pageName}</title>
+    </h:head>
+
+    <h:body>
+        <h:panelGroup id="page" layout="block">
+            <h:panelGroup id="container" layout="block">
+                <header>
+                    <p:panel header="Header">
+                        <h:outputText value="Authenticated user: #{authenticatedUser.userName} / #{authenticatedUser.firstName} #{authenticatedUser.lastName} / roles: #{authenticatedUser.groups}"
+                                      rendered="#{user.authenticated}"/>
+                        <h:outputText value="Not authenticated"
+                                      rendered="#{!user.authenticated}"/>
+                        <br/>
+                        <h:link value="Login" outcome="/login.xhtml" rendered="#{!user.authenticated}"/>
+                        <h:link value="Logout" outcome="/logout.xhtml" rendered="#{user.authenticated}"/>
+                    </p:panel>
+                </header>
+
+                <table>
+                    <tr valign="top">
+                        <td>
+                            <ui:insert name="nav">
+                                <h:form id="navForm">
+                                    <p:menu>
+                                        <ui:include src="menu.xhtml"/>
+                                    </p:menu>
+                                </h:form>
+                            </ui:insert>
+                        </td>
+                        <td style="width: 100%; text-align: center">
+                            <div style="display: inline-block; text-align: left">
+                                <h1>#{pageName}</h1>
+
+                                <ui:insert name="content" />
+
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <footer id="footer" style="margin-top: 1em">
+                    <p:panel header="Footer: Testavimui:"
+                             rendered="#{facesContext.application.projectStage == 'Development'}">
+                        <h:outputText value="Sesija: #{session.id}" />
+                    </p:panel>
+                </footer>
+            </h:panelGroup>
+        </h:panelGroup>
+
+        <f:facet name="last">
+            <h:outputStylesheet name="css/styles.css" />
+        </f:facet>
+
+    </h:body>
+</f:view>
+</html>

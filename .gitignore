@@ -1,0 +1,6 @@
+# IntelliJ IDEA setting files
+.idea/
+*.iml
+target/
+.gradle/
+caches/

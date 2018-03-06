@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+    <h:head>
+        <h:outputStylesheet name="css/styles.css" />
+        <title>Edit Student with Optimistic Locking</title>
+    </h:head>
+
+    <h:body>
+        <h1>Edit Student with Optimistic Locking</h1>
+
+        <h:form id="form">
+            <p:fieldset id="list" style="width: 50%">
+                <f:facet name="legend">
+                    All students
+                    <p:commandButton value="Refresh" icon="ui-icon-arrowrefresh-1-e"
+                                     actionListener="#{editStudentUseCaseController.reloadAll}"
+                                     update=":form:list"/>
+                </f:facet>
+
+                <p:dataTable value="#{editStudentUseCaseController.allStudents}" var="student" tableStyle="table-layout: auto">
+                    <p:column headerText="Student">
+                        #{student.firstName} #{student.lastName}, <br/><b>Reg. nr.</b>: #{student.registrationNo}
+                    </p:column>
+                    <p:column headerText="Courses">
+                        <ui:repeat var="course" value="#{student.courseList}" varStatus="courseStatus">
+                            #{course.name}<h:outputText value=", " rendered="#{not courseStatus.last}"/>
+                        </ui:repeat>
+                    </p:column>
+                    <p:column headerText="University">
+                        #{student.university.title}
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Edit" icon="ui-icon-pencil"
+                                         actionListener="#{editStudentUseCaseController.prepareForEditing(student)}"
+                                         update=":form:studentDetail"
+                                         oncomplete="PF('studentDialog').show()" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+
+            <p:dialog header="Edit Student" widgetVar="studentDialog" modal="true" closable="true" resizable="false" closeOnEscape="true">
+                <p:outputPanel id="studentDetail">
+                    <h:outputText value="No student was selected... Weird..." rendered="#{empty editStudentUseCaseController.selectedStudent}" />
+                    <p:panelGrid  columns="3" rendered="#{not empty editStudentUseCaseController.selectedStudent}"
+                                  columnClasses="label,value" styleClass="ui-noborder">
+                        <p:outputLabel for="firstName" value="First name:"/>
+                        <p:inputText id="firstName" value="#{editStudentUseCaseController.selectedStudent.firstName}"/>
+                        <p:message for="firstName"/>
+
+                        <p:outputLabel for="lastName" value="Last name:"/>
+                        <p:inputText id="lastName" value="#{editStudentUseCaseController.selectedStudent.lastName}"/>
+                        <p:message for="lastName"/>
+
+                        <p:outputLabel for="regnr" value="Registration No.:"/>
+                        <p:inputText id="regnr" value="#{editStudentUseCaseController.selectedStudent.registrationNo}"/>
+                        <p:message for="regnr"/>
+
+                        <p:outputLabel for="university" value="University:"/>
+                        <p:selectOneMenu id="university" value="#{editStudentUseCaseController.selectedStudent.university}"
+                                         converter="omnifaces.SelectItemsIndexConverter">
+                            <f:selectItem itemLabel="Select university:" itemValue="#{null}"/>
+                            <f:selectItems value="#{editStudentUseCaseController.allUniversities}" var="university"
+                                           itemLabel="#{university.title}" itemValue="#{university}"/>
+                        </p:selectOneMenu>
+                        <p:message for="university"/>
+
+                        <h:outputText value="Courses:"/>
+                        <p:selectCheckboxMenu id="courses" value="#{editStudentUseCaseController.selectedStudent.courseList}"
+                                              converter="omnifaces.SelectItemsIndexConverter"
+                                              label="Select courses:" updateLabel="true"
+                                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                            <f:attribute name="collectionType" value="java.util.ArrayList" /> <!-- Kitaip JSF bando kurti naują Hibernate PersistentBag ir būna bėdos... -->
+                            <f:selectItems value="#{editStudentUseCaseController.allCourses}" var="course"
+                                           itemLabel="#{course.name}" itemValue="#{course}" />
+                        </p:selectCheckboxMenu>
+                        <p:message for="courses"/>
+
+                        <h:outputText value="Opt. version:" />
+                        <h:outputText value="#{editStudentUseCaseController.selectedStudent.optLockVersion}" style="font-weight: bold"/>
+                    </p:panelGrid>
+
+                    <p:commandButton value="Update" actionListener="#{editStudentUseCaseController.updateSelectedStudent}"
+                                     rendered="#{empty editStudentUseCaseController.conflictingStudent}"
+                                     icon="ui-icon-check" style="margin-top: 1em"
+                                     update=":form:studentDetail :form:list"
+                                     oncomplete="if (args &amp;&amp; !args.validationFailed) PF('studentDialog').hide()" />
+
+                    <p:panelGrid  columns="2" rendered="#{not empty editStudentUseCaseController.conflictingStudent}"
+                                  columnClasses="label,value" styleClass="ui-noborder" style="margin-top: 1em">
+                        <f:facet name="header">Conflicting student</f:facet>
+
+                        <h:outputText value="First name:"/>
+                        <h:outputText value="#{editStudentUseCaseController.conflictingStudent.firstName}"/>
+
+                        <h:outputText value="Last name:"/>
+                        <h:outputText value="#{editStudentUseCaseController.conflictingStudent.lastName}"/>
+
+                        <h:outputText value="Registration No.:"/>
+                        <h:outputText value="#{editStudentUseCaseController.conflictingStudent.registrationNo}"/>
+
+                        <h:outputText value="University:"/>
+                        <h:outputText value="#{editStudentUseCaseController.conflictingStudent.university.title}" />
+
+                        <h:outputText value="Courses:"/>
+                        <ui:repeat var="course" value="#{editStudentUseCaseController.conflictingStudent.courseList}" varStatus="courseStatus">
+                            #{course.name}<h:outputText value=", " rendered="#{not courseStatus.last}"/>
+                        </ui:repeat>
+
+                        <h:outputText value="Opt. version:" />
+                        <h:outputText value="#{editStudentUseCaseController.conflictingStudent.optLockVersion}" style="font-weight: bold"/>
+                    </p:panelGrid>
+
+                    <p:commandButton value="Overwrite" actionListener="#{editStudentUseCaseController.overwriteStudent}"
+                                     rendered="#{not empty editStudentUseCaseController.conflictingStudent}"
+                                     icon="ui-icon-notice" style="margin-top: 1em"
+                                     update=":form:studentDetail :form:list"
+                                     oncomplete="if (args &amp;&amp; !args.validationFailed) PF('studentDialog').hide()" />
+                </p:outputPanel>
+            </p:dialog>
+
+            <p:messages globalOnly="true"/>
+        </h:form>
+
+    </h:body>
+</html>
+
