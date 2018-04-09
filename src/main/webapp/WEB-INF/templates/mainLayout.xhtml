@@ -16,15 +16,13 @@
     <h:body>
         <h:panelGroup id="page" layout="block">
             <h:panelGroup id="container" layout="block">
-                <header>
-                    <p:panel header="Header">
+                <header id="header">
+                    <p:panel header="User">
                         <h:outputText value="Authenticated user: #{authenticatedUser.userName} / #{authenticatedUser.firstName} #{authenticatedUser.lastName} / roles: #{authenticatedUser.groups}"
                                       rendered="#{user.authenticated}"/>
                         <h:outputText value="Not authenticated"
                                       rendered="#{!user.authenticated}"/>
                         <br/>
-                        <h:link value="Login" outcome="/login.xhtml" rendered="#{!user.authenticated}"/>
-                        <h:link value="Logout" outcome="/logout.xhtml" rendered="#{user.authenticated}"/>
                     </p:panel>
                 </header>
 
@@ -51,9 +49,9 @@
                 </table>
 
                 <footer id="footer" style="margin-top: 1em">
-                    <p:panel header="Footer: Testavimui:"
+                    <p:panel header="Session"
                              rendered="#{facesContext.application.projectStage == 'Development'}">
-                        <h:outputText value="Sesija: #{session.id}" />
+                        <h:outputText value="#{session.id}" />
                     </p:panel>
                 </footer>
             </h:panelGroup>

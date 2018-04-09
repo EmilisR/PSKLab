@@ -61,9 +61,9 @@ public class Student implements Serializable {
     @JohnzonIgnore
     private List<Course> courseList = new ArrayList<>();
 
-    @JoinColumn(name = "FACTORY_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "UNIVERSITY_ID", referencedColumnName = "ID")
     @ManyToOne
     @JohnzonIgnore
-    private Factory factory;
+    private University university;
 
 }

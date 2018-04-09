@@ -1,3 +1,15 @@
 .ui-widget, .ui-widget .ui-widget {
     font-size: 90%;
 }
+
+.ui-menu, .ui-panel {
+    padding: 0.6em;
+}
+
+#footer, #header {
+    padding: 0.2em;
+}
+
+fieldset[id^="j_id"] {
+    margin-bottom: 10px;
+}

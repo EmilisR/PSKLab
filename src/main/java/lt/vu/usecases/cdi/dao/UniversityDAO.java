@@ -1,6 +1,6 @@
 package lt.vu.usecases.cdi.dao;
 
-import lt.vu.entities.Factory;
+import lt.vu.entities.University;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

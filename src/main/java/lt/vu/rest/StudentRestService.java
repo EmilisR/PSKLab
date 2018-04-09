@@ -1,6 +1,6 @@
 package lt.vu.rest;
 
-import lt.vu.entities.Model;
+import lt.vu.entities.Student;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -12,15 +12,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @ApplicationScoped
-@Path("/model")
+@Path("/student")
 @Produces(MediaType.APPLICATION_JSON)
-public class ModelRestService {
+public class StudentRestService {
 
     @Inject private EntityManager em;
 
     @GET
-    @Path("/{modelId}")
-    public Model find(@PathParam("modelId") Integer modelId) {
-        return em.find(Model.class, modelId);
+    @Path("/{studentId}")
+    public Student find(@PathParam("studentId") Integer studentId) {
+        return em.find(Student.class, studentId);
     }
 }

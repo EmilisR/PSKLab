@@ -7,15 +7,15 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Model {
+public class Student {
 
     private Integer id;
     private String firstName;
     private String lastName;
-    private Integer factoryId;
+    private Integer universityId;
     private String registrationNo;
 
     // Rankomis prirašyti:
-    private Factory factory;
-    private List<Brand> brands;
+    private University university;
+    private List<Course> courses;
 }

@@ -14,11 +14,11 @@ public class SecureBean {
 
     @UserLoggedInArbaRagai
     public void tikPrisijungusiems() {
-        result = "Buvo iškviestas metodas skirtas tik prisijungusiems.";
+        result = "Users only method was called.";
     }
 
     @AdministratorArbaKrantai
     public void tikAdminams() {
-        result = "Buvo iškviestas metodas skirtas tik adminams.";
+        result = "Admins only method was called.";
     }
 }

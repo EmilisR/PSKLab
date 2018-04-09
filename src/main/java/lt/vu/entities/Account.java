@@ -28,24 +28,23 @@ public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Integer id;
+    public Integer id;
 
     @Size(min = 3, max = 128)
     @Column(name = "USER_NAME")
-    private String userName;
+    public String userName;
 
     @Column(name = "PASSWORD_DIGEST")
-    private String passwordDigest;
+    public String passwordDigest;
 
     @Column(name = "FIRST_NAME")
-    private String firstName;
+    public String firstName;
 
     @Column(name = "LAST_NAME")
-    private String lastName;
+    public String lastName;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name="ACCOUNT_GROUP", joinColumns=@JoinColumn(name="ACCOUNT_ID"))
     @Column(name = "GROUP_NAME")
     private Set<String> groups = new HashSet<>();
-
 }

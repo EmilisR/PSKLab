@@ -4,10 +4,18 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:p="http://primefaces.org/ui"
         >
-    <p:submenu label="Meniu...">
+    <p:submenu label="Menu">
+        <p:menuitem value="Home page" outcome="/index.xhtml"/>
+        <p:menuitem value="Create new course and student JPA" outcome="/simple-usecase-jpa.xhtml" rendered="#{user.isAuthenticated()}"/>
+        <p:menuitem value="Create new course and student MyBatis" outcome="/simple-usecase-mybatis.xhtml" rendered="#{user.isAuthenticated()}"/>
+        <p:menuitem value="Conversation CDI" outcome="/conversation-cdi.xhtml" rendered="#{user.isAuthenticated()}"/>
+        <p:menuitem value="Conversation EJB" outcome="/conversation-ejb.xhtml" rendered="#{user.isAuthenticated()}"/>
+        <p:menuitem value="Edit student" outcome="/editStudent.xhtml" rendered="#{user.isAuthenticated()}"/>
+        <p:menuitem value="Method security" outcome="/method-security.xhtml"/>
+        <p:menuitem value="For admins only" outcome="/admin/danger.xhtml" rendered="#{user.isAdmin()}" />
+        <p:menuitem value="For users only" outcome="/loggedIn/forUsers.xhtml" rendered="#{user.isAuthenticated()}" />
         <p:menuitem value="Login" outcome="/login.xhtml" rendered="#{!user.isAuthenticated()}"/>
+        <p:menuitem value="Register" outcome="/register.xhtml" rendered="#{!user.isAuthenticated()}"/>
         <p:menuitem value="Logout" outcome="/logout.xhtml" rendered="#{user.isAuthenticated()}"/>
-        <p:menuitem value="Tik administratoriams" outcome="/admin/danger.xhtml" rendered="#{user.isAdmin()}" />
-        <p:menuitem value="Tik prisijungusiems" outcome="/loggedIn/forUsers.xhtml" rendered="#{user.isAuthenticated()}" />
     </p:submenu>
 </ui:composition>
