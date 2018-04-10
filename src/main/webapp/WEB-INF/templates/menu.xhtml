@@ -5,11 +5,10 @@
         xmlns:p="http://primefaces.org/ui"
         >
     <p:submenu label="Menu">
-        <p:menuitem value="Home page" outcome="/index.xhtml"/>
-        <p:menuitem value="Create new course and student JPA" outcome="/simple-usecase-jpa.xhtml" rendered="#{user.isAuthenticated()}"/>
-        <p:menuitem value="Create new course and student MyBatis" outcome="/simple-usecase-mybatis.xhtml" rendered="#{user.isAuthenticated()}"/>
-        <p:menuitem value="Conversation CDI" outcome="/conversation-cdi.xhtml" rendered="#{user.isAuthenticated()}"/>
-        <p:menuitem value="Conversation EJB" outcome="/conversation-ejb.xhtml" rendered="#{user.isAuthenticated()}"/>
-        <p:menuitem value="Edit student" outcome="/editStudent.xhtml" rendered="#{user.isAuthenticated()}"/>
+        <p:menuitem value="Create new course and student JPA" outcome="/simple-usecase-jpa.xhtml"/>
+        <p:menuitem value="Create new course and student MyBatis" outcome="/simple-usecase-mybatis.xhtml"/>
+        <p:menuitem value="Conversation CDI" outcome="/conversation-cdi.xhtml"/>
+        <p:menuitem value="Conversation EJB" outcome="/conversation-ejb.xhtml"/>
+        <p:menuitem value="Edit student" outcome="/index.xhtml"/>
     </p:submenu>
 </ui:composition>

@@ -17,13 +17,6 @@
         <h:panelGroup id="page" layout="block">
             <h:panelGroup id="container" layout="block">
                 <header id="header">
-                    <p:panel header="User">
-                        <h:outputText value="Authenticated user: #{authenticatedUser.userName} / #{authenticatedUser.firstName} #{authenticatedUser.lastName} / roles: #{authenticatedUser.groups}"
-                                      rendered="#{user.authenticated}"/>
-                        <h:outputText value="Not authenticated"
-                                      rendered="#{!user.authenticated}"/>
-                        <br/>
-                    </p:panel>
                 </header>
 
                 <table>
@@ -49,10 +42,6 @@
                 </table>
 
                 <footer id="footer" style="margin-top: 1em">
-                    <p:panel header="Session"
-                             rendered="#{facesContext.application.projectStage == 'Development'}">
-                        <h:outputText value="#{session.id}" />
-                    </p:panel>
                 </footer>
             </h:panelGroup>
         </h:panelGroup>
