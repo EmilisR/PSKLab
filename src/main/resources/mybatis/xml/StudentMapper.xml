@@ -8,13 +8,9 @@
         <result column="registration_no" jdbcType="VARCHAR" property="registrationNo"/>
         <result column="university_id" jdbcType="INTEGER" property="universityId"/>
 
-        <!-- Rankomis prirašytas ryšiui ManyToOne Student -> University -->
-        <!-- Nested result (nėra N+1 select problemos) -->
         <association property="university" resultMap="lt.vu.usecases.mybatis.dao.UniversityMapper.BaseResultMap"
                      columnPrefix="university_"/>
 
-        <!-- Rankomis prirašytas ryšiui ManyToMany Student - Course -->
-        <!-- Nested select (yra N+1 select problema) -->
         <collection property="courses" javaType="ArrayList" column="id" ofType="Course" select="selectCoursesForStudent"/>
     </resultMap>
 
@@ -50,7 +46,6 @@
             LEFT JOIN public.university u ON s.university_id = u.id
     </select>
 
-    <!-- Rankomis prirašytas ryšiui ManyToMany Student - Course -->
     <select id="selectCoursesForStudent" resultType="Course">
         SELECT
             c.id,
@@ -59,5 +54,4 @@
             JOIN public.student_course sc on c.id = sc.course_id
         WHERE sc.student_id = #{id,jdbcType=INTEGER}
     </select>
-
 </mapper>
