@@ -1,11 +1,15 @@
 package lt.vu.usecases.cdi.conversation;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lt.vu.entities.Course;
 import lt.vu.entities.Student;
+import lt.vu.entities.University;
 import lt.vu.usecases.cdi.dao.CourseDAO;
 import lt.vu.usecases.cdi.dao.StudentDAO;
+import lt.vu.usecases.cdi.dao.UniversityDAO;
+import org.hibernate.Hibernate;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
@@ -29,7 +33,7 @@ public class ConversationUseCaseControllerCdi implements Serializable {
     private static final String PAGE_INDEX_REDIRECT = "conversation-cdi?faces-redirect=true";
 
     private enum CURRENT_FORM {
-        CREATE_COURSE, CREATE_STUDENT, CONFIRMATION
+        CREATE_STUDENT, CREATE_COURSE, CONFIRMATION
     }
 
     @Inject
@@ -43,15 +47,26 @@ public class ConversationUseCaseControllerCdi implements Serializable {
     private CourseDAO courseDAO;
     @Inject
     private StudentDAO studentDAO;
+    @Inject
+    private UniversityDAO universityDAO;
+
 
     @Getter
+    @Setter
     private Course course = new Course();
     @Getter
     private Student student = new Student();
     @Getter
+    @Setter
+    private University university = new University();
+    @Getter
     private List<Student> allStudents;
+    @Getter
+    private List<University> allUniversities;
+    @Getter
+    private List<Course> universityCourses;
 
-    private CURRENT_FORM currentForm = CURRENT_FORM.CREATE_COURSE;
+    private CURRENT_FORM currentForm = CURRENT_FORM.CREATE_STUDENT;
     public boolean isCurrentForm(CURRENT_FORM form) {
         return currentForm == form;
     }
@@ -59,24 +74,27 @@ public class ConversationUseCaseControllerCdi implements Serializable {
     @PostConstruct
     public void init() {
         loadAllStudents();
+        loadAllUniversities();
     }
 
     /**
      * The first conversation step.
      */
-    public void createCourse() {
+    public void createStudent() {
         conversation.begin();
-        currentForm = CURRENT_FORM.CREATE_STUDENT;
+        loadUniversityCourses(university.getId());
+        student.setUniversity(university);
+        currentForm = CURRENT_FORM.CREATE_COURSE;
     }
 
     /**
      * The second conversation step.
      */
-    public void createStudent() {
+    public void createCourse(){
         student.getCourseList().add(course);
-        course.getStudentList().add(student);
         currentForm = CURRENT_FORM.CONFIRMATION;
     }
+
 
     /**
      * The last conversation step.
@@ -84,7 +102,6 @@ public class ConversationUseCaseControllerCdi implements Serializable {
     @Transactional(Transactional.TxType.REQUIRED)
     public String ok() {
         try {
-            courseDAO.create(course);
             studentDAO.create(student);
             em.flush();
             Messages.addGlobalInfo("Success!");
@@ -112,5 +129,13 @@ public class ConversationUseCaseControllerCdi implements Serializable {
 
     private void loadAllStudents() {
         allStudents = studentDAO.getAllStudents();
+    }
+
+    private void loadAllUniversities() {
+        allUniversities = universityDAO.getAllUniversities();
+    }
+
+    private void loadUniversityCourses(int universityId) {
+        universityCourses = courseDAO.getUniversityCourses(universityId);
     }
 }

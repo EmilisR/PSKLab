@@ -39,6 +39,7 @@
                         <artifactId>postgresql</artifactId>
                         <version>42.0.0</version>
                     </dependency>
+
                 </dependencies>
             </plugin>
         </plugins>
@@ -55,7 +56,13 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+    <repositories>
+        <repository>
+            <id>prime-repo</id>
+            <name>Prime Repo</name>
+            <url>http://repository.primefaces.org</url>
+        </repository>
+    </repositories>
     <dependencies>
         <!-- Java EE 7 API -->
         <dependency>
@@ -122,7 +129,6 @@
             <artifactId>primefaces</artifactId>
             <version>6.1</version>
         </dependency>
-
         <!-- https://projectlombok.org/ -->
         <dependency>
             <groupId>org.projectlombok</groupId>

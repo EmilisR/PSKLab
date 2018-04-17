@@ -19,4 +19,8 @@ public class CourseDAO {
     public List<Course> getAllCourses() {
         return em.createNamedQuery("Course.findAll", Course.class).getResultList();
     }
+
+    public List<Course> getUniversityCourses(int universityId) {
+        return em.createNamedQuery("Course.findByUniversityId", Course.class).setParameter("id", universityId).getResultList();
+    }
 }

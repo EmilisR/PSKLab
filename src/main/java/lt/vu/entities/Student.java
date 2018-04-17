@@ -29,7 +29,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "registrationNo")
-@ToString(of = {"id", "firstName", "lastName", "registrationNo"})
+@ToString(of = {"id", "firstName", "lastName", "registrationNo", "university.title"})
 public class Student implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,12 +57,12 @@ public class Student implements Serializable {
     @JoinTable(name = "STUDENT_COURSE", joinColumns = {
         @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "COURSE_ID", referencedColumnName = "ID")})
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JohnzonIgnore
     private List<Course> courseList = new ArrayList<>();
 
     @JoinColumn(name = "UNIVERSITY_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JohnzonIgnore
     private University university;
 

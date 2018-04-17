@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "UNIVERSITY")
 @NamedQueries({
-    @NamedQuery(name = "University.findAll", query = "SELECT u FROM University u"),
+    @NamedQuery(name = "University.findAll", query = "SELECT u FROM University u WHERE OPT_LOCK_VERSION is null"),
     @NamedQuery(name = "University.findById", query = "SELECT u FROM University u WHERE u.id = :id"),
     @NamedQuery(name = "University.findByTitle", query = "SELECT u FROM University u WHERE u.title = :title"),
     @NamedQuery(name = "University.findByOptLockVersion", query = "SELECT u FROM University u WHERE u.optLockVersion = :optLockVersion")})
@@ -43,6 +43,6 @@ public class University implements Serializable {
     @Column(name = "OPT_LOCK_VERSION")
     private Integer optLockVersion;
 
-    @OneToMany(mappedBy = "university")
+    @OneToMany(mappedBy = "university", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<Student> studentList = new ArrayList<>();
 }

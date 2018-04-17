@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.johnzon.mapper.JohnzonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -19,8 +20,9 @@ import java.util.List;
 @Entity
 @Table(name = "COURSE")
 @NamedQueries({
-    @NamedQuery(name = "Course.findAll", query = "SELECT c FROM Course c"),
+    @NamedQuery(name = "Course.findAll", query = "SELECT c FROM Course c WHERE OPT_LOCK_VERSION is null"),
     @NamedQuery(name = "Course.findById", query = "SELECT c FROM Course c WHERE c.id = :id"),
+    @NamedQuery(name = "Course.findByUniversityId", query = "SELECT c FROM Course c WHERE c.university.id = :id"),
     @NamedQuery(name = "Course.findByName", query = "SELECT c FROM Course c WHERE c.name = :name"),
     @NamedQuery(name = "Course.findByOptLockVersion", query = "SELECT c FROM Course c WHERE c.optLockVersion = :optLockVersion")})
 @Getter
@@ -43,6 +45,12 @@ public class Course implements Serializable {
     @Column(name = "OPT_LOCK_VERSION")
     private Integer optLockVersion;
 
+    @JoinColumn(name = "UNIVERSITY_ID", referencedColumnName = "ID")
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @JohnzonIgnore
+    private University university;
+
     @ManyToMany(mappedBy = "courseList")
+    @JohnzonIgnore
     private List<Student> studentList = new ArrayList<>();
 }

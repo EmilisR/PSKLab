@@ -43,7 +43,7 @@
         SELECT s.id, s.first_name, s.last_name, s.registration_no, s.university_id,
             u.title as university_title
         FROM public.student s
-            LEFT JOIN public.university u ON s.university_id = u.id
+            INNER JOIN public.university u ON s.university_id = u.id
     </select>
 
     <select id="selectCoursesForStudent" resultType="Course">
